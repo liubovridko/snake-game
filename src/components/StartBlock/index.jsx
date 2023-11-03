@@ -10,9 +10,11 @@ import useInterval from "../../hooks/useInterval.js";
 
 export const StartBlock = ({ isShowBoard }) => {
   const { score, name, setName, setShowBoard } = useAppContext();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleNameChange = (e) => {
     setName(e.target.value);
+    setErrorMessage("");
   };
 
   const onNameSubmit = async () => {
@@ -21,7 +23,15 @@ export const StartBlock = ({ isShowBoard }) => {
 
       setShowBoard(true);
     } catch (err) {
-      console.warn(err);
+      if (
+        err.response &&
+        err.response.data &&
+        err.response.data.message === "Name already in use"
+      ) {
+        setErrorMessage("Name already in use. Please choose a different name.");
+      } else {
+        console.warn(err);
+      }
     }
   };
 
@@ -46,6 +56,9 @@ export const StartBlock = ({ isShowBoard }) => {
         <Button onClick={onNameSubmit} variant="contained">
           Start Game
         </Button>
+        {errorMessage && (
+          <div className={styles.error_message}>{errorMessage}</div>
+        )}
       </div>
     </div>
   );
