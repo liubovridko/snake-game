@@ -1,0 +1,40 @@
+.cell {
+  width: 15px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell-medium {
+  width: 30px;
+  height: 15px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+.cell-large {
+  width: 45px;
+  height: 15px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.cell--inner {
+  height: 100%;
+  width: 100%;
+  &__head {
+    background-color: green;
+  }
+  &__body {
+    background-color: green;
+  }
+  &__tail {
+    background-color: green;
+  }
+  &__pellet {
+    background-color: brown;
+  }
+}
