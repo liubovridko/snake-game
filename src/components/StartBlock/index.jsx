@@ -10,7 +10,7 @@ import useInterval from "../../hooks/useInterval.js";
 
 export const StartBlock = ({ isShowBoard }) => {
   const { score, name, setName, setShowBoard } = useAppContext();
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const handleNameChange = (e) => {
     setName(e.target.value);
