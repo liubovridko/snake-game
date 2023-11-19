@@ -1,15 +1,15 @@
-import React from "react";
-import axios from "../../axios.js";
+import React from 'react';
+import axios from '../../axios.js';
 
-import useKeyPress from "../../hooks/useKeyPress";
-import useInterval from "../../hooks/useInterval";
-import { Header } from "../../components/Header/";
-import { ListOfLeaders } from "./ListOfLeaders.jsx";
-import { ControlButton } from "./ControlButton.jsx";
-import { Cell } from "../Cell/";
-import styles from "./GameBoard.module.scss";
+import useKeyPress from '../../hooks/useKeyPress';
+import useInterval from '../../hooks/useInterval';
+import { Header } from '../../components/Header/';
+import { ListOfLeaders } from './ListOfLeaders.jsx';
+import { ControlButton } from './ControlButton.jsx';
+import { Cell } from '../Cell/';
+import styles from './GameBoard.module.scss';
 
-import { useAppContext } from "../../AppContext";
+import { useAppContext } from '../../AppContext';
 
 export const GameBoard = () => {
   const [cellCount] = React.useState(20);
@@ -26,23 +26,18 @@ export const GameBoard = () => {
   //const [pellet, setPellet] = React.useState({ x: 3, y: 5 });
 
   const [activePellet, setActivePellet] = React.useState({
-    type: "small",
+    type: 'small',
     points: 1,
     position: { x: 5, y: 5 },
   });
   const [totalPelletPoints, setTotalPelletPoints] = React.useState(0);
-  const [direction, setDirection] = React.useState("up");
+  const [direction, setDirection] = React.useState('up');
   const [pelletEaten, setPelletEaten] = React.useState(false);
-  const [gameState, setGameState] = React.useState("paused"); // paused, started, finished
-  const [changeDirection, setChangeDirection] = React.useState(false);
-  const { name, score, setScore } = useAppContext();
 
-  const keyPressed = useKeyPress([
-    "ArrowUp",
-    "ArrowDown",
-    "ArrowLeft",
-    "ArrowRight",
-  ]);
+  const [changeDirection, setChangeDirection] = React.useState(false);
+  const { name, score, setScore, gameState, setGameState } = useAppContext();
+
+  const keyPressed = useKeyPress(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight']);
 
   const moveBodyAndTail = () => {
     if (!pelletEaten) {
@@ -50,9 +45,7 @@ export const GameBoard = () => {
     } else {
       setPelletEaten(false);
     }
-    const nBody = pelletEaten
-      ? body
-      : body.filter((x, y) => y !== body.length - 1);
+    const nBody = pelletEaten ? body : body.filter((x, y) => y !== body.length - 1);
     setBody([head, ...nBody]);
     setChangeDirection(false);
   };
@@ -82,16 +75,10 @@ export const GameBoard = () => {
   };
 
   const checkAndSetHead = (h) => {
-    if (
-      body.some((b) => b.x === h.x && b.y === h.y) ||
-      (h.x === tail.x && h.y === tail.y)
-    ) {
-      setGameState("finished");
+    if (body.some((b) => b.x === h.x && b.y === h.y) || (h.x === tail.x && h.y === tail.y)) {
+      setGameState('finished');
       setSpeedLevel(1);
-    } else if (
-      h.x === activePellet.position.x &&
-      h.y === activePellet.position.y
-    ) {
+    } else if (h.x === activePellet.position.x && h.y === activePellet.position.y) {
       setPelletEaten(true);
       setScore(score + activePellet.points);
 
@@ -119,9 +106,9 @@ export const GameBoard = () => {
   const getRandomPelletType = () => {
     // You can define the types and their respective points here
     const pelletTypes = [
-      { type: "small", points: 1 },
-      { type: "medium", points: 5 },
-      { type: "large", points: 10 },
+      { type: 'small', points: 1 },
+      { type: 'medium', points: 5 },
+      { type: 'large', points: 10 },
     ];
 
     // Randomly select a pellet type
@@ -131,28 +118,28 @@ export const GameBoard = () => {
 
   const moveSnake = () => {
     switch (direction) {
-      case "up":
+      case 'up':
         if (head.y === 0) {
           checkAndSetHead({ ...head, y: cellCount - 1 });
         } else {
           checkAndSetHead({ ...head, y: head.y - 1 });
         }
         break;
-      case "down":
+      case 'down':
         if (head.y === cellCount - 1) {
           checkAndSetHead({ ...head, y: 0 });
         } else {
           checkAndSetHead({ ...head, y: head.y + 1 });
         }
         break;
-      case "right":
+      case 'right':
         if (head.x === cellCount - 1) {
           checkAndSetHead({ ...head, x: 0 });
         } else {
           checkAndSetHead({ ...head, x: head.x + 1 });
         }
         break;
-      case "left":
+      case 'left':
         if (head.x === 0) {
           checkAndSetHead({ ...head, x: cellCount - 1 });
         } else {
@@ -169,24 +156,24 @@ export const GameBoard = () => {
     if (!changeDirection) {
       setChangeDirection(true);
       switch (key) {
-        case "ArrowUp":
-          if (direction !== "down") {
-            setDirection("up");
+        case 'ArrowUp':
+          if (direction !== 'down') {
+            setDirection('up');
           }
           break;
-        case "ArrowDown":
-          if (direction !== "up") {
-            setDirection("down");
+        case 'ArrowDown':
+          if (direction !== 'up') {
+            setDirection('down');
           }
           break;
-        case "ArrowRight":
-          if (direction !== "left") {
-            setDirection("right");
+        case 'ArrowRight':
+          if (direction !== 'left') {
+            setDirection('right');
           }
           break;
-        case "ArrowLeft":
-          if (direction !== "right") {
-            setDirection("left");
+        case 'ArrowLeft':
+          if (direction !== 'right') {
+            setDirection('left');
           }
           break;
         default:
@@ -197,27 +184,27 @@ export const GameBoard = () => {
 
   const updateUserData = async () => {
     try {
-      const { data } = await axios.put("/update", { name, score });
+      const { data } = await axios.put('/update', { name, score });
     } catch (err) {
       console.warn(err);
     }
   };
 
   const handleGameStateSwitch = () => {
-    if (gameState === "started") {
-      setGameState("paused");
-    } else if (gameState === "finished") {
+    if (gameState === 'started') {
+      setGameState('paused');
+    } else if (gameState === 'finished') {
       setHead({ x: 1, y: 10 });
       setBody([
         { x: 1, y: 11 },
         { x: 1, y: 12 },
       ]);
       setTail({ x: 1, y: 13 });
-      setDirection("up");
-      setGameState("started");
+      setDirection('up');
+      setGameState('started');
       updateUserData();
     } else {
-      setGameState("started");
+      setGameState('started');
     }
   };
 
@@ -231,18 +218,18 @@ export const GameBoard = () => {
     () => {
       moveSnake();
     },
-    gameState === "started" ? duration / speedLevel : null,
+    gameState === 'started' ? duration / speedLevel : null,
   );
 
   useInterval(
     () => {
       setActivePellet({
-        type: "small",
+        type: 'small',
         points: 1,
         position: getRandomCell(),
       });
     },
-    gameState === "started" ? duration * cellCount * 2 : null,
+    gameState === 'started' ? duration * cellCount * 2 : null,
     pelletEaten,
   );
 
@@ -273,7 +260,7 @@ export const GameBoard = () => {
           gameState={gameState}
           handleGameStateSwitch={handleGameStateSwitch}
         />
-        <ListOfLeaders gameState={gameState} />
+        <ListOfLeaders />
       </div>
     </>
   );
