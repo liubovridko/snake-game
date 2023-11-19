@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext } from 'react';
 
 const AppContext = createContext();
 
@@ -8,7 +8,8 @@ export function useAppContext() {
 
 export function AppProvider({ children }) {
 	const [score, setScore] = React.useState(0);
-	const [name, setName] = React.useState("");
+	const [name, setName] = React.useState('');
+	const [gameState, setGameState] = React.useState('paused'); // paused, started, finished
 	const [isShowBoard, setShowBoard] = React.useState(false);
 
 	return (
@@ -20,6 +21,8 @@ export function AppProvider({ children }) {
 				setName,
 				isShowBoard,
 				setShowBoard,
+				gameState,
+				setGameState,
 			}}
 		>
 			{children}
