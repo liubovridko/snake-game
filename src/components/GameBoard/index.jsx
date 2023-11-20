@@ -255,11 +255,7 @@ export const GameBoard = () => {
           ))}
         </div>
 
-        <ControlButton
-          score={score}
-          gameState={gameState}
-          handleGameStateSwitch={handleGameStateSwitch}
-        />
+        <ControlButton score={score} handleGameStateSwitch={handleGameStateSwitch} />
         <ListOfLeaders />
       </div>
     </>
