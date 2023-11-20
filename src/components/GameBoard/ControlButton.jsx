@@ -1,10 +1,12 @@
-import Button from "@mui/material/Button";
-import styles from "./GameBoard.module.scss";
+import Button from '@mui/material/Button';
+import styles from './GameBoard.module.scss';
+import { useAppContext } from '../../AppContext';
 
-export const ControlButton = ({ gameState, handleGameStateSwitch, score }) => {
+export const ControlButton = ({ handleGameStateSwitch, score }) => {
+	const { gameState } = useAppContext();
 	return (
 		<div className={styles.startBtn}>
-			{gameState !== "finished" ? (
+			{gameState !== 'finished' ? (
 				<Button
 					variant="contained"
 					color="success"
@@ -13,7 +15,7 @@ export const ControlButton = ({ gameState, handleGameStateSwitch, score }) => {
 						handleGameStateSwitch();
 					}}
 				>
-					{gameState === "started" ? "pause" : "start"}
+					{gameState === 'started' ? 'pause' : 'start'}
 				</Button>
 			) : (
 				<>
